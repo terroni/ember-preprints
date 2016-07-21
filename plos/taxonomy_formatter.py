@@ -1,6 +1,7 @@
 import json
 from pprint import pprint
 
+num_levels = 3
 delim = "_"
 master_list = []
 
@@ -24,26 +25,21 @@ def dfs(tree):
 with open('top3levels.json') as data_file:
     data = json.load(data_file)
 
+# Top level doesn't have 'nodes' field
 for tree in data['tree']:
     dfs(tree)
 
 master_list = sorted(master_list)
 
 print(sorted(master_list))
-
 print len(master_list)
 
+# Check for proper formatting of subjects
 for subject in master_list:
-    if len(subject.split(delim)) > 3:
+    if len(subject.split(delim)) > num_levels:
         print 'Improperly formatted: ' + subject
         exit(1)
 
-output = open('top_3_levels_flat.json', 'w')
-#
-# output.write('{\n')
-# output.write('\t"subjects": [')
-# output.write('\t\t' + ',\n\t\t'.join(master_list) + '\n')
-# output.write('\t]\n')
-# output.write('}')
+output = open('top_' + str(num_levels) + '_levels_flat.json', 'w')
 
 output.write(json.dumps({ "subjects": master_list } ))
