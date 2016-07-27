@@ -4,6 +4,7 @@ from pprint import pprint
 num_levels = 3
 delim = "_"
 master_list = []
+reverse = True
 
 def dfs(tree):
     # Prime the pump
@@ -31,7 +32,15 @@ for tree in data['tree']:
 
 master_list = sorted(master_list)
 
-print(sorted(master_list))
+def reverseSubject(subject):
+    asList = subject.split(delim)
+    asList.reverse()
+    return delim.join(asList)
+
+if reverse:
+    master_list = map( lambda subject: reverseSubject(subject), master_list )
+
+print(master_list)
 print len(master_list)
 
 # Check for proper formatting of subjects
@@ -40,6 +49,9 @@ for subject in master_list:
         print 'Improperly formatted: ' + subject
         exit(1)
 
-output = open('top_' + str(num_levels) + '_levels_flat.json', 'w')
+if reverse:
+    output = open('top_' + str(num_levels) + '_levels_flat_reverse.json', 'w')
+else:
+    output = open('top_' + str(num_levels) + '_levels_flat.json', 'w')
 
-output.write(json.dumps({ "subjects": master_list } ))
+output.write(json.dumps({ "data": master_list } ))
